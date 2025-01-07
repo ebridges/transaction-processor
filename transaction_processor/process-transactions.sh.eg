@@ -1,0 +1,33 @@
+#!/bin/bash
+
+shopt -s nullglob
+
+verbose=
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -v|--verbose)
+      verbose='--verbose'
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+for acct in my-checking-account my-creditcard_account;
+do
+    input_dir=dnloads/${acct}
+    if [[ -n $(echo ${input_dir}/*.CSV) ]]; then
+        for file in `echo ${input_dir}/*.CSV`;
+        do
+            echo ">>>> ${file}"
+            python process-transactions.py ${file} --account-name ${acct} ${verbose}
+            mv ${file} "${file}.done"
+        done
+    else
+        echo "No CSV files found in ${input_dir}"
+    fi
+done
