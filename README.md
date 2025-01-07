@@ -23,6 +23,8 @@ options:
   --verbose
 ```
 
+An included shell script: `transaction_processor/process-transactions.sh.eg` provides a real-world example of how you might use this.
+
 ## Account configuration file
 
 Default location: `etc/account-config.json`
